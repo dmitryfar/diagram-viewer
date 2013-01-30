@@ -1,0 +1,441 @@
+﻿<html>
+<head>
+	<link rel="stylesheet" href="style.css" type="text/css" media="screen">
+	<!--<script src="http://raphaeljs.com/raphael.js" type="text/javascript" charset="utf-8"></script>-->
+	<script src="js/raphael.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script src="js/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/Color.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/Polyline.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/ActivityImpl.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/LineBreakMeasurer.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/ProcessDiagramGenerator.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/ProcessDiagramCanvas.js" type="text/javascript" charset="utf-8"></script>
+	
+	<style type="text/css" media="screen">
+		#holder {
+			h_eight: 250px;
+			m_argin: -125px 0 0 -400px;
+			w_idth: 800px;
+			
+			w_idth:1000px;
+			h_eight:800px;
+			
+		}
+	</style>
+</head>
+<body>
+	<script language='javascript'>
+
+	$(document).ready(function(){
+			//ProcessDiagramCanvas.init(1000, 1000);
+			var diagramCanvas = new ProcessDiagramCanvas();
+			diagramCanvas.init(1000, 800);
+			
+			/*
+			// HOWTO: rotate arrow
+			var c = ProcessDiagramCanvas.g.ellipse(0, 0, 3, 3);
+			var s = ProcessDiagramCanvas.g.path("M0 0L10 -30L-10 -30z");
+			var angle = -45;
+			var targetX= 350, targetY= 241;
+			s.transform("t"+targetX+","+targetY+"");
+			c.transform("t"+targetX+","+targetY+"");
+			s.transform("...r" + angle + " "+0+" "+0);
+			*/
+			
+			/*
+			// HOWTO: draw label with align and word wrapping
+			var wrapWidth = 60;
+			var height=35, width=35, x=20, y=10;
+			ProcessDiagramCanvas.drawLabel("ВАСЯН ВАСЯНЫЧ abcdefghigklmnopqrstuvwxyz0123456789abcdefghigklmnopqrstuvwxyz0123456789", x, y, width, height, {wrapWidth: wrapWidth, align: "left"});
+			//ProcessDiagramCanvas.drawLabel("abcdef", 500, 50, width, height);
+			*/
+			
+			
+			//
+			var height=35, width=35, x=50, y=10;
+			var label = "None start event";
+			var activityImpl = new ActivityImpl({"activityId": "startevent1", "properties": {"name": "", "type": "startEvent"}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2, boxY = activityImpl.getY() + .5 + activityImpl.getHeight()/* + ICON_PADDING*/;
+			diagramCanvas.drawLabel(label, boxX, boxY);
+			//
+			var height=35, width=35, x=490, y=10;
+			var label = "Throwing None Event";
+			var activityImpl = new ActivityImpl({"activityId": "intermediateThrowEvent1", "properties": {"name": "", "type": "intermediateThrowEvent"}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2, boxY = activityImpl.getY() + .5 + activityImpl.getHeight()/* + ICON_PADDING*/;
+			diagramCanvas.drawLabel(label, boxX, boxY);
+			//
+			var height=35, width=35, x=600, y=10;
+			var label = "None End Event";
+			var activityImpl = new ActivityImpl({"activityId": "endEvent1", "properties": {"name": "", "type": "endEvent"}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2, boxY = activityImpl.getY() + .5 + activityImpl.getHeight()/* + ICON_PADDING*/;
+			diagramCanvas.drawLabel(label, boxX, boxY);
+			
+			//****
+			
+			//
+			var height=35, width=35, x=50, y=100;
+			var label = "Message Start Event";
+			var isInterrupting = null;
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "startMessageEvent1", "properties": {"name": "", "type": "startMessageEvent", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2, boxY = activityImpl.getY() + .5 + activityImpl.getHeight()/* + ICON_PADDING*/;
+			diagramCanvas.drawLabel(label, boxX, boxY);
+			//
+			var height=35, width=35, x=160, y=100;
+			var label = "Message Start Event\nNon-Interrupting";
+			var isInterrupting = false;
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "startMessageEvent2", "properties": {"name": "", "type": "startMessageEvent", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2, boxY = activityImpl.getY() + .5 + activityImpl.getHeight()/* + ICON_PADDING*/;
+			diagramCanvas.drawLabel(label, boxX, boxY);
+			//
+			var height=35, width=35, x=270, y=100;
+			var label = "Catching Message Event";
+			var isInterrupting = null;
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "intermediateMessageCatch1", "properties": {"name": label, "type": "intermediateMessageCatch", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2, boxY = activityImpl.getY() + .5 + activityImpl.getHeight()/* + ICON_PADDING*/;
+			//diagramCanvas.drawLabel(label, boxX, boxY);
+			//
+			var height=35, width=35, x=380, y=100;
+			var label = "Catching Message Event\nNon-Interrupting";
+			var isInterrupting = false;
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "intermediateMessageCatch2", "properties": {"name": label, "type": "intermediateMessageCatch", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//ProcessDiagramCanvas.drawCatchingMessageEvent(x, y, width, height, isInterrupting, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=490, y=100;
+			var label = "Throwing Message Event";
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "intermediateMessageThrow1", "properties": {"name": label, "type": "intermediateMessageThrow"}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//ProcessDiagramCanvas.drawThrowingMessageEvent(x, y, width, height, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=600, y=100;
+			var label = "End Message Event";
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "messageEndEvent1", "properties": {"name": label, "type": "messageEndEvent"}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//ProcessDiagramCanvas.drawMessageEndEvent(x, y, width, height, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			
+			//****
+			
+			//
+			var height=35, width=35, x=50, y=220;
+			var label = "Timer Start Event";
+			var name = null;
+			var isInterrupting = null;
+			var activityImpl = new ActivityImpl({"activityId": "startTimerEvent1", "properties": {"name": label, "type": "startTimerEvent", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2, boxY = activityImpl.getY() + .5 + activityImpl.getHeight()/* + ICON_PADDING*/;
+			diagramCanvas.drawLabel(label, boxX, boxY);
+			//ProcessDiagramCanvas.drawTimerStartEvent(x, y, width, height, isInterrupting, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=160, y=220;
+			var label = "Timer Start Event";
+			var name = null;
+			var isInterrupting = false;
+			var activityImpl = new ActivityImpl({"activityId": "startTimerEvent1", "properties": {"name": label, "type": "startTimerEvent", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2, boxY = activityImpl.getY() + .5 + activityImpl.getHeight()/* + ICON_PADDING*/;
+			diagramCanvas.drawLabel(label, boxX, boxY);
+			//ProcessDiagramCanvas.drawTimerStartEvent(x, y, width, height, isInterrupting, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=270, y=220;
+			var label = "Catching Timer Event";
+			var name = null;
+			var isInterrupting = null;
+			var activityImpl = new ActivityImpl({"activityId": "boundaryTimer1", "properties": {"name": label, "type": "boundaryTimer", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//ProcessDiagramCanvas.drawCatchingTimerEvent(x, y, width, height, isInterrupting, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=380, y=220;
+			var label = "Catching Timer Event\nNon-Interrupting";
+			var name = null;
+			var isInterrupting = false;
+			var activityImpl = new ActivityImpl({"activityId": "boundaryTimer2", "properties": {"name": label, "type": "boundaryTimer", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//ProcessDiagramCanvas.drawCatchingTimerEvent(x, y, width, height, isInterrupting, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			
+			//****
+			
+			//
+			var height=35, width=35, x=50, y=340;
+			var label = "Error Start Event";
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "errorStartEvent1", "properties": {"name": "", "type": "errorStartEvent"}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2, boxY = activityImpl.getY() + .5 + activityImpl.getHeight()/* + ICON_PADDING*/;
+			diagramCanvas.drawLabel(label, boxX, boxY);
+			//ProcessDiagramCanvas.drawErrorStartEvent(x, y, width, height, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=270, y=340;
+			var label = "Catching Error Event";
+			var name = null;
+			var isInterrupting = null;
+			var activityImpl = new ActivityImpl({"activityId": "boundaryError1", "properties": {"name": label, "type": "boundaryError", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//ProcessDiagramCanvas.drawCatchingErrorEvent(x, y, width, height, isInterrupting, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=380, y=340;
+			var label = "Catching Error Event\nNon-Interrupting";
+			var name = null;
+			var isInterrupting = false;
+			var activityImpl = new ActivityImpl({"activityId": "boundaryError1", "properties": {"name": label, "type": "boundaryError", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//ProcessDiagramCanvas.drawCatchingErrorEvent(x, y, width, height, isInterrupting, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=600, y=340;
+			var label = "Error End Event";
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "errorEndEvent1", "properties": {"name": "", "type": "errorEndEvent"}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2, boxY = activityImpl.getY() + .5 + activityImpl.getHeight()/* + ICON_PADDING*/;
+			diagramCanvas.drawLabel(label, boxX, boxY);
+			//ProcessDiagramCanvas.drawErrorEndEvent(x, y, width, height, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			
+			//****
+			//
+			var height=35, width=35, x=50, y=460;
+			var label = "Signal Start Event";
+			var isInterrupting = null;
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "startSignalEvent1", "properties": {"name": label, "type": "startSignalEvent", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2, boxY = activityImpl.getY() + .5 + activityImpl.getHeight()/* + ICON_PADDING*/;
+			diagramCanvas.drawLabel(label, boxX, boxY);
+			//ProcessDiagramCanvas.drawSignalStartEvent(x, y, width, height, isInterrupting, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=160, y=460;
+			var label = "Signal Start Event\nNon-Interrupting";
+			var isInterrupting = false;
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "startSignalEvent2", "properties": {"name": label, "type": "startSignalEvent", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2, boxY = activityImpl.getY() + .5 + activityImpl.getHeight()/* + ICON_PADDING*/;
+			diagramCanvas.drawLabel(label, boxX, boxY);
+			//ProcessDiagramCanvas.drawSignalStartEvent(x, y, width, height, isInterrupting, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=270, y=460;
+			var label = "Catching Signal Event";
+			var isInterrupting = null;
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "intermediateSignalCatch1", "properties": {"name": label, "type": "intermediateSignalCatch", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//ProcessDiagramCanvas.drawCatchingSignalEvent(x, y, width, height, isInterrupting, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=380, y=460;
+			var label = "Catching Signal Event\nNon-Interrupting";
+			var isInterrupting = false;
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "intermediateSignalCatch2", "properties": {"name": label, "type": "intermediateSignalCatch", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//ProcessDiagramCanvas.drawCatchingSignalEvent(x, y, width, height, isInterrupting, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=490, y=460;
+			var label = "Throwing Signal Event";
+			var isInterrupting = null;
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "intermediateSignalThrow1", "properties": {"name": label, "type": "intermediateSignalThrow", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2, boxY = activityImpl.getY() + .5 + activityImpl.getHeight()/* + ICON_PADDING*/;
+			diagramCanvas.drawLabel(label, boxX, boxY);
+			//ProcessDiagramCanvas.drawThrowingSignalEvent(x, y, width, height, isInterrupting, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=600, y=460;
+			var label = "Signal End Event";
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "signalEndEvent1", "properties": {"name": label, "type": "signalEndEvent"}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//ProcessDiagramCanvas.drawSignalEndEvent(x, y, width, height, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			
+			//****
+			//
+			var height=35, width=35, x=50, y=580;
+			var label = "Multiple Start Event";
+			var isInterrupting = null;
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "startMultipleEvent1", "properties": {"name": label, "type": "startMultipleEvent", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2, boxY = activityImpl.getY() + .5 + activityImpl.getHeight()/* + ICON_PADDING*/;
+			diagramCanvas.drawLabel(label, boxX, boxY);
+			//ProcessDiagramCanvas.drawMultipleStartEvent(x, y, width, height, isInterrupting, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=160, y=580;
+			var label = "Multiple Start Event\nNon-Interrupting";
+			var isInterrupting = false;
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "startMultipleEvent2", "properties": {"name": label, "type": "startMultipleEvent", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2, boxY = activityImpl.getY() + .5 + activityImpl.getHeight()/* + ICON_PADDING*/;
+			diagramCanvas.drawLabel(label, boxX, boxY);
+			//ProcessDiagramCanvas.drawMultipleStartEvent(x, y, width, height, isInterrupting, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=270, y=580;
+			var label = "Catching Multiple Event";
+			var isInterrupting = null;
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "intermediateMultipleCatch1", "properties": {"name": label, "type": "intermediateMultipleCatch", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//ProcessDiagramCanvas.drawCatchingMultipleEvent(x, y, width, height, isInterrupting, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=380, y=580;
+			var label = "Catching Multiple Event\nNon-Interrupting";
+			var isInterrupting = false;
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "intermediateMultipleCatch2", "properties": {"name": label, "type": "intermediateMultipleCatch", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//ProcessDiagramCanvas.drawCatchingMultipleEvent(x, y, width, height, isInterrupting, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=490, y=580;
+			var label = "Throwing Multiple Event";
+			var isInterrupting = null;
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "intermediateMultipleThrow1", "properties": {"name": label, "type": "intermediateMultipleThrow", "isInterrupting": isInterrupting}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//ProcessDiagramCanvas.drawThrowingMultipleEvent(x, y, width, height, isInterrupting, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			//
+			var height=35, width=35, x=600, y=580;
+			var label = "Multiple End Event";
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "multipleEndEvent1", "properties": {"name": label, "type": "multipleEndEvent"}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//ProcessDiagramCanvas.drawMultipleEndEvent(x, y, width, height, name);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			
+			//****
+			//
+			var height=35, width=35, x=600, y=700;
+			var label = "Terminate End Event";
+			var name = null;
+			var activityImpl = new ActivityImpl({"activityId": "terminateEndEvent1", "properties": {"name": label, "type": "terminateEndEvent"}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//ProcessDiagramCanvas.drawTerminateEndEvent(x, y, width, height);
+			//ProcessDiagramCanvas.drawLabel(label, x, y, width, height, {wrapWidth: 60});
+			
+			
+			
+			
+			//
+			var height=55, width=235, x=700, y=10;
+			var name = "pool or lane";
+			diagramCanvas.drawPoolOrLane(x, y, width, height, name);
+			//
+			var height=55, width=235, x=700, y=80;
+			var name = "event sub process Triggered By Event";
+			var isTriggeredByEvent = true;
+			diagramCanvas.drawExpandedSubProcess(name, x, y, width, height, isTriggeredByEvent);
+			//
+			var height=55, width=235, x=700, y=150;
+			var name = "expanded sub process not TriggeredByEvent";
+			var isTriggeredByEvent = false;
+			diagramCanvas.drawExpandedSubProcess(name, x, y, width, height, isTriggeredByEvent);
+			var multiInstanceSequential=false, multiInstanceParallel=false, collapsed=true;
+			diagramCanvas.drawActivityMarkers(x, y, width, height, multiInstanceSequential,
+				multiInstanceParallel, collapsed);
+			//
+			var height=55, width=235, x=700, y=220;
+			var name = "Collapsed Sub Process";
+			//var isTriggeredByEvent = false;
+			diagramCanvas.drawCollapsedSubProcess(name, x, y, width, height, isTriggeredByEvent);
+			var multiInstanceSequential=true, multiInstanceParallel=false, collapsed=false;
+			diagramCanvas.drawActivityMarkers(x, y, width, height, multiInstanceSequential,
+				multiInstanceParallel, collapsed);
+			//
+			var height=55, width=235, x=700, y=290;
+			var name = "Collapsed Call Activity";
+			diagramCanvas.drawCollapsedCallActivity(name, x, y, width, height);
+			var multiInstanceSequential=false, multiInstanceParallel=true, collapsed=false;
+			diagramCanvas.drawActivityMarkers(x, y, width, height, multiInstanceSequential,
+				multiInstanceParallel, collapsed);
+			//
+			var height=40, width=40, x=700, y=360;
+			diagramCanvas.drawParallelGateway(x, y, width, height);
+			//
+			var height=40, width=40, x=770, y=360;
+			diagramCanvas.drawExclusiveGateway(x, y, width, height);
+			//
+			var height=40, width=40, x=830, y=360;
+			diagramCanvas.drawInclusiveGateway(x, y, width, height);
+			//
+			var height=40, width=40, x=900, y=360;
+			diagramCanvas.drawEventBasedGateway(x, y, width, height);
+			//
+			diagramCanvas.contextObject = null;
+			var waypoints = [ {x: "700",	y: "420"}, {x: "800",	y: "405"}, {x: "870",	y: "435"}, {x: "940",	y: "420"} ];
+			var conditional=false, isDefault = false, hightLighed=false;
+			diagramCanvas.drawSequenceflowWithoutArrow(waypoints, conditional, isDefault, hightLighed);
+			//
+			var waypoints = [ {x: "700",	y: "450"}, {x: "800",	y: "435"}, {x: "870",	y: "465"}, {x: "940",	y: "450"} ];
+			var conditional=false, isDefault = false, hightLighed=false;
+			diagramCanvas.drawSequenceflow(waypoints, conditional, isDefault, hightLighed);
+			//
+			var waypoints = [ {x: "700",	y: "480"}, {x: "800",	y: "465"}, {x: "870",	y: "495"}, {x: "940",	y: "480"} ];
+			var conditional=true, isDefault = false, hightLighed=false;
+			diagramCanvas.drawSequenceflow(waypoints, conditional, isDefault, hightLighed);
+			//
+			var waypoints = [ {x: "700",	y: "510"}, {x: "800",	y: "495"}, {x: "870",	y: "525"}, {x: "940",	y: "510"} ];
+			var conditional=false, isDefault = true, hightLighed=false;
+			diagramCanvas.drawSequenceflow(waypoints, conditional, isDefault, hightLighed);
+			//
+			var waypoints = [ {x: "700",	y: "540"}, {x: "800",	y: "525"}, {x: "870",	y: "555"}, {x: "940",	y: "540"} ];
+			var conditional=false, isDefault = true, hightLighed=true;
+			diagramCanvas.drawSequenceflow(waypoints, conditional, isDefault, hightLighed);
+			//
+			var waypoints = [ {x: "700",	y: "570"}, {x: "800",	y: "555"}, {x: "870",	y: "585"}, {x: "940",	y: "570"} ];
+			var conditional=false, isDefault = false, hightLighed=false;
+			diagramCanvas.drawMessageflow(waypoints, hightLighed);
+			//
+			var waypoints = [ {x: "700",	y: "600"}, {x: "800",	y: "585"}, {x: "870",	y: "615"}, {x: "940",	y: "600"} ];
+			var conditional=false, isDefault = false, hightLighed=false;
+			var withArrowHead = false;
+			diagramCanvas.drawAssociation(waypoints, withArrowHead, hightLighed);
+			//
+			var waypoints = [ {x: "700",	y: "630"}, {x: "800",	y: "615"}, {x: "870",	y: "645"}, {x: "940",	y: "630"} ];
+			var conditional=false, isDefault = false, hightLighed=false;
+			var withArrowHead = true;
+			diagramCanvas.drawAssociation(waypoints, withArrowHead, hightLighed);
+			
+			var height=55, width=235, x=700, y=670;
+			diagramCanvas.drawUserTask("User Task", x, y, width, height);
+			
+			var height=55, width=235, x=700, y=740;
+			diagramCanvas.drawScriptTask("Script Task", x, y, width, height);
+			
+		});
+	</script>
+	<div style="float:left; border:1px solid #dedede;">
+		<div id="holder"></div>
+	</div>
+</body>
+</html>

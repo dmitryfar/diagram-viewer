@@ -1,0 +1,138 @@
+﻿<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<link rel="stylesheet" href="style.css" type="text/css" media="screen">
+	<!--<script src="http://raphaeljs.com/raphael.js" type="text/javascript" charset="utf-8"></script>-->
+	<script src="js/raphael.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script src="js/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery/jquery.progressbar.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery/jquery.asyncqueue.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script src="js/Color.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/Polyline.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/ActivityImpl.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/LineBreakMeasurer.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/ProcessDiagramGenerator.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/ProcessDiagramCanvas.js" type="text/javascript" charset="utf-8"></script>
+	
+	<style type="text/css" media="screen">
+		span.digit-red{
+			color: red;
+		}
+		span.digit-blue{
+			color: blue;
+		}
+	</style>
+</head>
+<body>
+<div class="wrapper">
+	<div style="top: 100px; left:100px; position: absolute; width: 800px;">
+		<div id="pb1"></div>
+		<div id="queue"></div>
+	</div>
+	<div id="overlayBox" >
+		<div id="diagramBreadCrumbs" class="diagramBreadCrumbs" onmousedown="return false" onselectstart="return false"></div>
+		<div id="diagramHolder" class="diagramHolder"></div>
+		<div class="diagram-info" id="diagramInfo"></div>
+	</div>
+</div>
+<script language='javascript'>
+var DiagramGenerator = {};
+var pb1;
+$(document).ready(function(){
+	var progress = 0;
+	
+	var fblue = function(i){
+		//console.log("", i);
+		var v = $("#queue").html();
+		$("#queue").html("<span class='digit-blue'>" + i + "</span>" + " | " + v);
+	};
+	
+	var f = function(a, color){
+		//console.log("", a);
+		var v = $("#queue").html();
+		if (color) a = "<span class='"+color+"'>" + a + "</span>";
+		$("#queue").html(a + " | " + v);
+		
+		progress++;
+		pb1.value(progress);
+	}
+	
+	var q = new $.AsyncQueue();
+	q.onComplete(function(){
+		//console.log("COMPLETE!!!");
+		var v = $("#queue").html();
+		$("#queue").html("COMPLETE!!!" + " | " + v);
+	});
+	q.pause();
+	
+	
+	/*
+	for (var i=9000; i<9500; i++) {
+		var fx = function(ix){
+			q.addParallel(function (q) {
+				f(ix);
+			});
+		}(i);
+	}
+	*/
+	
+	for (var i=0; i<50; i++) {
+		var fx = function(ix){
+
+			q.add(function (q) {
+				f(ix);
+			});
+		}(i);
+	}
+	
+	
+	var arr = [];
+	for (var i=3000; i<3050; i++) {
+		arr.push(i);
+	}
+	q.add(arr,function (q, obj) {
+		f(obj, "digit-red");
+	}, 2000).add(function (q) {
+		// none
+	}).add(arr,function (q, obj) {
+		f(obj, "digit-blue");
+	}, 2000);
+	
+	for (var i=0; i<50; i++) {
+		var fx = function(ix){
+			q.add(function (q) {
+				f(ix);
+			});
+		}(i);
+	}
+
+	pb1 = new $.ProgressBar({
+		boundingBox: '#pb1',
+		label: 'Progressbar!',
+		on: {
+			complete: function() {
+				console.log("Progress Bar COMPLETE");
+				this.set('label', 'complete!');
+			},
+			valueChange: function(e) {
+				// console.log('valueChange', e.newVal);
+				this.set('label', 'tasks: ' + e.newVal + '');
+			}
+		},
+		value: 0,
+		max: q.size()-1
+	});
+	
+	console.log("START QUEUE! size: ", q.size());
+	q.run();
+	
+	
+});
+
+
+</script>
+</body>
+</html>

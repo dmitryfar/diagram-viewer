@@ -1,0 +1,125 @@
+﻿<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<link rel="stylesheet" href="style.css" type="text/css" media="screen">
+	<!--<script src="http://raphaeljs.com/raphael.js" type="text/javascript" charset="utf-8"></script>-->
+	<script src="js/raphael.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script src="js/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery/jquery.progressbar.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery/jquery.asyncqueue.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script src="js/Color.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/Polyline.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/ActivityImpl.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/LineBreakMeasurer.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/ProcessDiagramGenerator.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/ProcessDiagramCanvas.js" type="text/javascript" charset="utf-8"></script>
+	
+	<style type="text/css" media="screen">
+		
+	</style>
+</head>
+<body>
+<div class="wrapper">
+	<div style="top: 100px; left:100px; position: absolute; width: 500px;">
+		<div id="pb1"></div>
+	</div>
+</div>
+<script language='javascript'>
+var pb1;
+$(document).ready(function(){
+	var fblue = function(i){
+		//console.log("", i);
+		var v = $("#pb1").html();
+		$("#pb1").html("<span class='digit-blue'>" + i + "</span>" + " | " + v);
+	};
+	
+	var f = function(a, color){
+		//console.log("", a);
+		var v = $("#pb1").html();
+		if (color) a = "<span class='"+color+"'>" + a + "</span>";
+		$("#pb1").html(a + " | " + v);
+		
+	}
+	
+	var q = new $.AsyncQueue();
+	q.onComplete(function(){
+		console.log("QUEUE COMPLETE!!!");
+		/*
+		var v = $("#pb1").html();
+		$("#pb1").html("COMPLETE!!!" + " | " + v);
+		*/
+	});
+	q.pause();
+	
+	
+	/*
+	for (var i=9000; i<9500; i++) {
+		var fx = function(ix){
+			q.addParallel(function (q) {
+				f(ix);
+			});
+		}(i);
+	}
+	*/
+	
+	/*	
+	for (var i=0; i<50; i++) {
+		var fx = function(ix){
+
+			q.add(function (q) {
+				f(ix);
+			});
+		}(i);
+	}
+	
+	var arr = [];
+	for (var i=3000; i<3050; i++) {
+		arr.push(i);
+	}
+	q.add(arr,function (q, obj) {
+		f(obj, "digit-red");
+	}, 2000).add(function (q) {
+		// none
+	}).add(arr,function (q, obj) {
+		f(obj, "digit-blue");
+	}, 2000);
+	*/
+	for (var i=0; i<=100; i++) {
+		var fx = function(ix){
+			q.add(function (q) {
+				//f(ix);
+				pb1.value(ix);
+			});
+		}(i);
+	}
+
+	pb1 = new $.ProgressBar({
+		boundingBox: '#pb1',
+		label: 'Progressbar!',
+		on: {
+			complete: function() {
+				console.log("PB COMPLETE!!!");
+				this.set('label', 'complete!');
+			},
+			valueChange: function(e) {
+				// console.log('valueChange', e.newVal);
+				this.set('label', e.newVal + '%');
+			}
+		},
+		value: 10
+	});
+	//pb1.value(20);
+	
+	//console.log("START!");
+	q.run();
+	
+	
+});
+
+
+</script>
+</body>
+</html>
