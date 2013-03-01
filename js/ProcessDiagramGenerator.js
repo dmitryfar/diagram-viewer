@@ -873,7 +873,7 @@ var ProcessDiagramGenerator = {
 			type: 'POST',
 			dataType: 'json',
 			cache: false,
-			async: false,
+			async: false
 		}).done(function(data) { 
 			console.log("ajax returned data");
 			//console.log("ajax returned data:", data);

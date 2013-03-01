@@ -14,8 +14,8 @@ var ActivitiRest = {
 				if (!processDefinition) {
 					console.error("Process definition '" + processDefinitionKey + "' not found");
 				} else {
-				callback.apply({processDefinitionId: processDefinition.id});
-			}
+					callback.apply({processDefinitionId: processDefinition.id});
+				}
 			}
 		}).done(function(data, textStatus) {
 			//console.log("ajax done");
@@ -72,5 +72,5 @@ var ActivitiRest = {
 		}).fail(function(jqXHR, textStatus, error){
 			console.log('Get HighLights['+processInstanceId+'] failure: ', textStatus, jqXHR);
 		});
-	},
+	}
 };

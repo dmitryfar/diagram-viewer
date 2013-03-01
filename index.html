@@ -3,6 +3,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	
 	<link rel="stylesheet" href="style.css" type="text/css" media="screen">
+	<script src="js/jstools.js" type="text/javascript" charset="utf-8"></script>
 	<!--<script src="http://raphaeljs.com/raphael.js" type="text/javascript" charset="utf-8"></script>-->
 	<script src="js/raphael.js" type="text/javascript" charset="utf-8"></script>
 	
@@ -35,9 +36,6 @@
 var DiagramGenerator = {};
 var pb1;
 $(document).ready(function(){
-	var diagrams = [];
-	diagrams.push("techCollectionProcess");
-	
 	console.log("Initialize progress bar");
 	pb1 = new $.ProgressBar({
 		boundingBox: '#pb1',
@@ -63,7 +61,7 @@ $(document).ready(function(){
 		*/
 		diagramBreadCrumbsId: "diagramBreadCrumbs",
 		diagramHolderId: "diagramHolder",
-		diagramInfoId: "diagramInfo",
+		diagramInfoId: "diagramInfo"
 	};
 	ActivitiRest.options = {
 		/*
@@ -73,32 +71,13 @@ $(document).ready(function(){
 		*/
 		processInstanceHighLightsUrl: "http://luijee.ru/diagram-viewer/activiti-rest/process-instance.php?id={processInstanceId}&callback=?",
 		processDefinitionUrl: "http://luijee.ru/diagram-viewer/activiti-rest/process-difinition-diagram-layout.php?id={processDefinitionId}&callback=?",
-		processDefinitionByKeyUrl: "http://luijee.ru/diagram-viewer/activiti-rest/process-definition.php?id={processDefinitionKey}&callback=?",
+		processDefinitionByKeyUrl: "http://luijee.ru/diagram-viewer/activiti-rest/process-definition.php?id={processDefinitionKey}&callback=?"
 	};
 	
 	
 	var processDefinitionId = "techCollectionProcess";
-		ProcessDiagramGenerator.drawDiagram(processDefinitionId);
-	setTimeout(function(processDefinitionId) {
-	}(processDefinitionId));
-	
-	/*
-	// Draw all diagrams from list
-	for (var i in diagrams) {
-		var processDefinitionId = diagrams[i];
-		console.log("diagramKey: " + processDefinitionId);
-		
-		//pb1.set('value', 0);
-		
-		setTimeout(function(processDefinitionId) {
-			ProcessDiagramGenerator.drawDiagram(processDefinitionId);
-		}(processDefinitionId));
-	}
-	*/
-
+	ProcessDiagramGenerator.drawDiagram(processDefinitionId);
 });
-
-
 </script>
 </body>
 </html>
