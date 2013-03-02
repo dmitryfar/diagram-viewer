@@ -75,11 +75,9 @@ var ProcessDiagramGenerator = {
 			var isInterrupting = activityImpl.getProperty("isInterrupting");
 			processDiagramCanvas.drawCatchingSignalEvent(activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), isInterrupting, null);
 			
-			var label = activityImpl.getProperty("name");
-			//processDiagramCanvas.drawLabel(label, activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), {wrapWidth: 80});
-			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2;
-			var boxY = activityImpl.getY() + .5 + activityImpl.getHeight() + ICON_PADDING;
-			processDiagramCanvas.drawLabel(label, boxX, boxY);
+			var label = ProcessDiagramGenerator.getActivitiLabel(activityImpl);
+			if (label)
+				processDiagramCanvas.drawLabel(label.text, label.x, label.y, label.width, label.height);
 		};
 		
 		// message catch
@@ -91,11 +89,9 @@ var ProcessDiagramGenerator = {
 			var isInterrupting = activityImpl.getProperty("isInterrupting");
 			processDiagramCanvas.drawCatchingMessageEvent(activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), isInterrupting, null);
 			
-			var label = activityImpl.getProperty("name");
-			//processDiagramCanvas.drawLabel(label, activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), {wrapWidth: 80});
-			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2;
-			var boxY = activityImpl.getY() + .5 + activityImpl.getHeight() + ICON_PADDING;
-			processDiagramCanvas.drawLabel(label, boxX, boxY);
+			var label = ProcessDiagramGenerator.getActivitiLabel(activityImpl);
+			if (label)
+				processDiagramCanvas.drawLabel(label.text, label.x, label.y, label.width, label.height);
 		};
 		
 		// multiple catch
@@ -107,11 +103,9 @@ var ProcessDiagramGenerator = {
 			var isInterrupting = activityImpl.getProperty("isInterrupting");
 			processDiagramCanvas.drawCatchingMultipleEvent(activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), isInterrupting, null);
 			
-			var label = activityImpl.getProperty("name");
-			//processDiagramCanvas.drawLabel(label, activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), {wrapWidth: 80});
-			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2;
-			var boxY = activityImpl.getY() + .5 + activityImpl.getHeight() + ICON_PADDING;
-			processDiagramCanvas.drawLabel(label, boxX, boxY);
+			var label = ProcessDiagramGenerator.getActivitiLabel(activityImpl);
+			if (label)
+				processDiagramCanvas.drawLabel(label.text, label.x, label.y, label.width, label.height);
 		};
 		
 		
@@ -123,6 +117,10 @@ var ProcessDiagramGenerator = {
 			processDiagramCanvas.setConextObject(activityImpl);
 			
 			processDiagramCanvas.drawThrowingSignalEvent(activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), activityImpl.getProperty("name"));
+			
+			var label = ProcessDiagramGenerator.getActivitiLabel(activityImpl);
+			if (label)
+				processDiagramCanvas.drawLabel(label.text, label.x, label.y, label.width, label.height);
 		};
 		
 		// message throw
@@ -133,10 +131,9 @@ var ProcessDiagramGenerator = {
 			
 			processDiagramCanvas.drawThrowingMessageEvent(activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), activityImpl.getProperty("name"));
 			
-			var label = activityImpl.getProperty("name");
-			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2;
-			var boxY = activityImpl.getY() + .5 + activityImpl.getHeight() + ICON_PADDING;
-			processDiagramCanvas.drawLabel(label, boxX, boxY);
+			var label = ProcessDiagramGenerator.getActivitiLabel(activityImpl);
+			if (label)
+				processDiagramCanvas.drawLabel(label.text, label.x, label.y, label.width, label.height);
 		};
 		
 		// multiple throw
@@ -147,10 +144,9 @@ var ProcessDiagramGenerator = {
 			
 			processDiagramCanvas.drawThrowingMultipleEvent(activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), activityImpl.getProperty("name"));
 			
-			var label = activityImpl.getProperty("name");
-			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2;
-			var boxY = activityImpl.getY() + .5 + activityImpl.getHeight() + ICON_PADDING;
-			processDiagramCanvas.drawLabel(label, boxX, boxY);
+			var label = ProcessDiagramGenerator.getActivitiLabel(activityImpl);
+			if (label)
+				processDiagramCanvas.drawLabel(label.text, label.x, label.y, label.width, label.height);
 		};
 		
 		// none throw
@@ -160,6 +156,10 @@ var ProcessDiagramGenerator = {
 			processDiagramCanvas.setConextObject(activityImpl);
 			
 			processDiagramCanvas.drawThrowingNoneEvent(activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), activityImpl.getProperty("name"));
+			
+			var label = ProcessDiagramGenerator.getActivitiLabel(activityImpl);
+			if (label)
+				processDiagramCanvas.drawLabel(label.text, label.x, label.y, label.width, label.height);
 		};
 		
 		// end event
@@ -179,11 +179,9 @@ var ProcessDiagramGenerator = {
 			
 			processDiagramCanvas.drawErrorEndEvent(activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), null);
 			
-			var label = activityImpl.getProperty("name");
-			//processDiagramCanvas.drawLabel(label, activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), {wrapWidth: 80});
-			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2;
-			var boxY = activityImpl.getY() + .5 + activityImpl.getHeight() + ICON_PADDING;
-			processDiagramCanvas.drawLabel(label, boxX, boxY);
+			var label = ProcessDiagramGenerator.getActivitiLabel(activityImpl);
+			if (label)
+				processDiagramCanvas.drawLabel(label.text, label.x, label.y, label.width, label.height);
 		};
 		
 		// message end event
@@ -194,11 +192,9 @@ var ProcessDiagramGenerator = {
 			
 			processDiagramCanvas.drawMessageEndEvent(activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), null);
 			
-			var label = activityImpl.getProperty("name");
-			//processDiagramCanvas.drawLabel(label, activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), {wrapWidth: 80});
-			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2;
-			var boxY = activityImpl.getY() + .5 + activityImpl.getHeight() + ICON_PADDING;
-			processDiagramCanvas.drawLabel(label, boxX, boxY);
+			var label = ProcessDiagramGenerator.getActivitiLabel(activityImpl);
+			if (label)
+				processDiagramCanvas.drawLabel(label.text, label.x, label.y, label.width, label.height);
 		};
 		
 		// signal end event
@@ -209,11 +205,9 @@ var ProcessDiagramGenerator = {
 			
 			processDiagramCanvas.drawSignalEndEvent(activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), null);
 			
-			var label = activityImpl.getProperty("name");
-			//processDiagramCanvas.drawLabel(label, activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), {wrapWidth: 80});
-			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2;
-			var boxY = activityImpl.getY() + .5 + activityImpl.getHeight() + ICON_PADDING;
-			processDiagramCanvas.drawLabel(label, boxX, boxY);
+			var label = ProcessDiagramGenerator.getActivitiLabel(activityImpl);
+			if (label)
+				processDiagramCanvas.drawLabel(label.text, label.x, label.y, label.width, label.height);
 		};
 		
 		// multiple end event
@@ -224,11 +218,9 @@ var ProcessDiagramGenerator = {
 			
 			processDiagramCanvas.drawMultipleEndEvent(activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), null);
 			
-			var label = activityImpl.getProperty("name");
-			//processDiagramCanvas.drawLabel(label, activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), {wrapWidth: 80});
-			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2;
-			var boxY = activityImpl.getY() + .5 + activityImpl.getHeight() + ICON_PADDING;
-			processDiagramCanvas.drawLabel(label, boxX, boxY);
+			var label = ProcessDiagramGenerator.getActivitiLabel(activityImpl);
+			if (label)
+				processDiagramCanvas.drawLabel(label.text, label.x, label.y, label.width, label.height);
 		};
 		
 		// terminate end event
@@ -239,11 +231,9 @@ var ProcessDiagramGenerator = {
 			
 			processDiagramCanvas.drawTerminateEndEvent(activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight());
 			
-			var label = activityImpl.getProperty("name");
-			//processDiagramCanvas.drawLabel(label, activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), {wrapWidth: 80});
-			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2;
-			var boxY = activityImpl.getY() + .5 + activityImpl.getHeight() + ICON_PADDING;
-			processDiagramCanvas.drawLabel(label, boxX, boxY);
+			var label = ProcessDiagramGenerator.getActivitiLabel(activityImpl);
+			if (label)
+				processDiagramCanvas.drawLabel(label.text, label.x, label.y, label.width, label.height);
 		};
 		
 		// error start event
@@ -381,11 +371,9 @@ var ProcessDiagramGenerator = {
 			var isInterrupting = activityImpl.getProperty("isInterrupting");
 			processDiagramCanvas.drawCatchingTimerEvent(activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), isInterrupting, null);
 			
-			var label = activityImpl.getProperty("name");
-			
-			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2;
-			var boxY = activityImpl.getY() + .5 + activityImpl.getHeight() + ICON_PADDING;
-			processDiagramCanvas.drawLabel(label, boxX, boxY);
+			var label = ProcessDiagramGenerator.getActivitiLabel(activityImpl);
+			if (label)
+				processDiagramCanvas.drawLabel(label.text, label.x, label.y, label.width, label.height);
 			
 			//processDiagramCanvas.drawLabel(label, activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), {wrapWidth: 80});
 		};
@@ -399,12 +387,9 @@ var ProcessDiagramGenerator = {
 			var isInterrupting = activityImpl.getProperty("isInterrupting");
 			processDiagramCanvas.drawCatchingErrorEvent(activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), isInterrupting, null);
 			
-			var label = activityImpl.getProperty("name");
-			//processDiagramCanvas.drawLabel(label, activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), {wrapWidth: 80});
-			
-			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2;
-			var boxY = activityImpl.getY() + .5 + activityImpl.getHeight() + ICON_PADDING;
-			processDiagramCanvas.drawLabel(label, boxX, boxY);
+			var label = ProcessDiagramGenerator.getActivitiLabel(activityImpl);
+			if (label)
+				processDiagramCanvas.drawLabel(label.text, label.x, label.y, label.width, label.height);
 		};
 		
 		// Boundary signal event
@@ -416,11 +401,9 @@ var ProcessDiagramGenerator = {
 			var isInterrupting = activityImpl.getProperty("isInterrupting");
 			processDiagramCanvas.drawCatchingSignalEvent(activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), isInterrupting, null);
 			
-			var label = activityImpl.getProperty("name");
-			//processDiagramCanvas.drawLabel(label, activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight(), {wrapWidth: 80});
-			var boxX = activityImpl.getX() + .5 + activityImpl.getWidth()/2;
-			var boxY = activityImpl.getY() + .5 + activityImpl.getHeight() + ICON_PADDING;
-			processDiagramCanvas.drawLabel(label, boxX, boxY);
+			var label = ProcessDiagramGenerator.getActivitiLabel(activityImpl);
+			if (label)
+				processDiagramCanvas.drawLabel(label.text, label.x, label.y, label.width, label.height);
 		};
 		
 		// timer catch event
@@ -468,7 +451,34 @@ var ProcessDiagramGenerator = {
 			processDiagramCanvas.drawCollapsedCallActivity(activityImpl.getProperty("name"), activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight());
 		};
 	},
+	
+	getActivitiLabel:function(activityImpl){
+		/*
+			TODO: Label object should be in activityImpl and looks like:
+			{
+				x: 250,
+				y: 250,
+				width: 80,
+				height: 30
+			}
+			And then:
+			if (!activityImpl.label)
+				return null;
+			var label = activityImpl.label;
+			label.text = activityImpl.name;
+			return label;
+		*/
 		
+		// But now default label for all events is:
+		return {
+					text: activityImpl.getProperty("name"),
+					x: activityImpl.getX() + .5 + activityImpl.getWidth()/2,
+					y: activityImpl.getY() + .5 + activityImpl.getHeight() + ICON_PADDING,
+					width: 100,
+					height: 0
+		};
+	},
+	
 	generateDiagram: function(processDefinitionDiagramLayout){
 		// Init canvas
 		var processDefinitionId = processDefinitionDiagramLayout.processDefinition.id;
