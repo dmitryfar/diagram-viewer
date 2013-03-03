@@ -1042,6 +1042,12 @@ var ProcessDiagramGenerator = {
 		diagramInfo.html(tpl);
 	},
 	
+	hideInfo: function(){
+		var diagramInfo = $("#" + this.options.diagramInfoId);
+		if (!diagramInfo) return;
+		diagramInfo.html("");
+	},
+	
 	vvoid: function(){}
 };
 

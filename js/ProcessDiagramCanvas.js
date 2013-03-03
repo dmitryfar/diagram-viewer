@@ -232,34 +232,48 @@ ProcessDiagramCanvas.prototype = {
 		object.data("contextObject", contextObject);
 	},
 	
-	onCLick: function(){
-		var overlay = this;
+	onClick: function(event, instance, element){
+		var overlay = element;
 		var set = overlay.data("set");
 		var contextObject = overlay.data("contextObject");
 		console.log("["+contextObject.getProperty("type")+"], activityId: " + contextObject.getId());
-		// TODO: provide callback
+		
+		if (ProcessDiagramGenerator.options && ProcessDiagramGenerator.options.on && ProcessDiagramGenerator.options.on.click) {
+			var args = [instance, element, contextObject];
+			ProcessDiagramGenerator.options.on.click.apply(event, args);
+		}
 	},
-	onHoverIn: function(){
-		this.g = this.paper;
-		var overlay = this;
+	onHoverIn: function(event, instance, element){
+		var overlay = element;
 		var set = overlay.data("set");
 		var contextObject = overlay.data("contextObject");
 		
-		var border = this.g.getById(contextObject.id + "_border");
+		var border = instance.g.getById(contextObject.id + "_border");
 		border.attr("opacity", 0.3);
 		
-		ProcessDiagramGenerator.showActivityInfo(contextObject);
-		// TODO: provide callback
+		//ProcessDiagramGenerator.showActivityInfo(contextObject);
+		
+		// provide callback
+		if (ProcessDiagramGenerator.options && ProcessDiagramGenerator.options.on && ProcessDiagramGenerator.options.on.over) {
+			var args = [instance, element, contextObject];
+			ProcessDiagramGenerator.options.on.over.apply(event, args);
+		}
 	},
-	onHoverOut: function(){
-		this.g = this.paper;
-		var overlay = this;
+	onHoverOut: function(event, instance, element){
+		var overlay = element;
 		var set = overlay.data("set");
 		var contextObject = overlay.data("contextObject");
 		
-		var border = this.g.getById(contextObject.id + "_border");
+		var border = instance.g.getById(contextObject.id + "_border");
 		border.attr("opacity", 0.0);
-		// TODO: provide callback
+		
+		//ProcessDiagramGenerator.hideInfo();
+		
+		// provide callback
+		if (ProcessDiagramGenerator.options && ProcessDiagramGenerator.options.on && ProcessDiagramGenerator.options.on.out) {
+			var args = [instance, element, contextObject];
+			ProcessDiagramGenerator.options.on.out.apply(event, args);
+		}
 	},
 	addHandlers: function(set, x, y, width, height, type){
 		var contextObject = this.getConextObject();
@@ -280,6 +294,9 @@ ProcessDiagramCanvas.prototype = {
 										"L" + (x + width) + " " + (y + (height / 2)) +
 										"L" + (x + (width / 2)) + " " + y +
 										"z" );
+		} else if (type == "task") {
+			var border = this.g.rect(x - 4, y - 4, width+9, height+9, TASK_CORNER_ROUND+4);
+			var overlay = this.g.rect(x, y, width, height, TASK_CORNER_ROUND);
 		}
 		
 		border.attr({stroke: Color.get(132,112,255)/*Color.Tan1*/,"stroke-width": 4, opacity: 0.0});
@@ -292,8 +309,9 @@ ProcessDiagramCanvas.prototype = {
 		overlay.id = contextObject.id;
 		overlay.data("contextObject",contextObject);
 		
-		overlay.click(this.onCLick);
-		overlay.hover(this.onHoverIn, this.onHoverOut);
+		var instance = this;
+		overlay.click(function(event){instance.onClick(event, instance, this);});
+		overlay.hover(function(event){instance.onHoverIn(event, instance, this);}, function(event){instance.onHoverOut(event, instance, this);});
 	},
 	
 	/*
@@ -1223,7 +1241,7 @@ ProcessDiagramCanvas.prototype = {
 		
 		// shape
 		var shape = this.g.rect(x, y, width, height, TASK_CORNER_ROUND);
-		var attr = {"stroke-width": this.strokeWidth, stroke: TASK_STROKE_COLOR, fill: this.getPaint(), cursor: "hand"};
+		var attr = {"stroke-width": this.strokeWidth, stroke: TASK_STROKE_COLOR, fill: this.getPaint()};
 		shape.attr(attr);
 		//shape.attr({fill: "90-"+this.getPaint()+"-" + Color.get(250, 250, 244)});
 		
@@ -1290,55 +1308,6 @@ ProcessDiagramCanvas.prototype = {
 			
 			this.drawTaskLabel(name, boxX, boxY, boxWidth, boxHeight);
 		}
-		
-		//var clone = shape.clone().attr({fill: Color.get(0,0,0), opacity: 0.5});
-		var border = this.g.rect(x-4, y-4, width+8, height+8, TASK_CORNER_ROUND+4).attr({stroke: Color.get(132,112,255)/*Color.Tan1*/,"stroke-width": 4, opacity: 0.0});
-		var clone = this.g.rect(x, y, width, height, TASK_CORNER_ROUND).attr({stroke: Color.Orange,"stroke-width": 3, fill: Color.get(0,0,0), opacity: 0.0, cursor: "hand"});
-		
-		clone.data("objectId",shape.id);
-		clone.click(function(){
-			var instance = this;
-			var objectId = instance.data("objectId");
-			var object = this.paper.getById(objectId);
-			var contextObject = object.data("contextObject");
-			//console.log("["+contextObject.getProperty("type")+"], objectId: " + object.id +", activityId: " + contextObject.getId());
-			console.log("["+contextObject.getProperty("type")+"], activityId: " + contextObject.getId());
-			
-			if (contextObject.getProperty("type") == "callActivity") {
-				var processDefinitonKey = contextObject.getProperty("processDefinitonKey");
-				var processDefinitons = contextObject.getProperty("processDefinitons");
-				var processDefiniton = processDefinitons[0];
-				console.log("Load callActivity '" + processDefiniton.processDefinitionKey + "', contextObject: ", contextObject);
-				
-				// Load processDefinition
-				
-				// TODO: use ID, not KEY!
-				ProcessDiagramGenerator.drawDiagram(processDefiniton.processDefinitionId);
-			}
-			
-			ProcessDiagramGenerator.showActivityInfo(contextObject);
-		});
-		
-		clone.hover(function (mouseEvent) {
-				this.g = this.paper;
-				
-				var instance = this;
-				//console.log(instance);
-				var objectId = instance.data("objectId");
-				var object = this.paper.getById(objectId);
-				var contextObject = object.data("contextObject");
-				
-				border.attr("opacity", 0.3);
-				
-				//console.log("over: ", side, this, "x:" + this.attr("x"), "y:" + this.attr("y"));
-				
-				ProcessDiagramGenerator.showActivityInfo(contextObject);
-				
-            }, function (mouseEvent) {
-				var instance = this;
-				
-				border.attr("opacity", 0.0);
-            });
 	},
 	
 	drawTaskLabel: function(text, x, y, boxWidth, boxHeight){
@@ -1561,41 +1530,78 @@ ProcessDiagramCanvas.prototype = {
 	},
 	
 	drawUserTask: function(name, x, y, width, height) {
+		this.g.setStart();
+		
 		this._drawTask(name, x, y, width, height);
 		var img = this.g.image(USERTASK_IMAGE, x + ICON_PADDING, y + ICON_PADDING, ICON_SIZE, ICON_SIZE);
+		
+		var set = this.g.setFinish();
+		this.addHandlers(set, x, y, width, height, "task");
 	},
 	
 	drawScriptTask: function(name, x, y, width, height) {
+		this.g.setStart();
+		
 		this._drawTask(name, x, y, width, height);
 		var img = this.g.image(SCRIPTTASK_IMAGE, x + ICON_PADDING, y + ICON_PADDING, ICON_SIZE, ICON_SIZE);
+		
+		var set = this.g.setFinish();
+		this.addHandlers(set, x, y, width, height, "task");
 	},
 	
 	drawServiceTask: function(name, x, y, width, height) {
+		this.g.setStart();
+		
 		this._drawTask(name, x, y, width, height);
 		var img = this.g.image(SERVICETASK_IMAGE, x + ICON_PADDING, y + ICON_PADDING, ICON_SIZE, ICON_SIZE);
+		
+		var set = this.g.setFinish();
+		this.addHandlers(set, x, y, width, height, "task");
 	},
 	
 	drawReceiveTask: function(name, x, y, width, height) {
+		this.g.setStart();
+		
 		this._drawTask(name, x, y, width, height);
 		var img = this.g.image(RECEIVETASK_IMAGE, x + 7, y + 7, ICON_SIZE, ICON_SIZE);
+		
+		var set = this.g.setFinish();
+		this.addHandlers(set, x, y, width, height, "task");
 	},
 	
 	drawSendTask: function(name, x, y, width, height) {
+		this.g.setStart();
+		
 		this._drawTask(name, x, y, width, height);
 		var img = this.g.image(SENDTASK_IMAGE, x + 7, y + 7, ICON_SIZE, ICON_SIZE);
+		
+		var set = this.g.setFinish();
+		this.addHandlers(set, x, y, width, height, "task");
 	},
 	
 	drawManualTask: function(name, x, y, width, height) {
+		this.g.setStart();
+		
 		this._drawTask(name, x, y, width, height);
 		var img = this.g.image(MANUALTASK_IMAGE, x + 7, y + 7, ICON_SIZE, ICON_SIZE);
+		
+		var set = this.g.setFinish();
+		this.addHandlers(set, x, y, width, height, "task");
 	},
 	
 	drawBusinessRuleTask: function(name, x, y, width, height) {
+		this.g.setStart();
+		
 		this._drawTask(name, x, y, width, height);
 		var img = this.g.image(BUSINESS_RULE_TASK_IMAGE, x + 7, y + 7, ICON_SIZE, ICON_SIZE);
+		
+		var set = this.g.setFinish();
+		this.addHandlers(set, x, y, width, height, "task");
 	},
 	
 	drawExpandedSubProcess: function(name, x, y, width, height, isTriggeredByEvent){
+		this.g.setStart();
+		
 		// anti smoothing
 		if (this.strokeWidth%2 == 1)
 			x = Math.round(x) + .5, y = Math.round(y) + .5;
@@ -1624,17 +1630,31 @@ ProcessDiagramCanvas.prototype = {
 		var realHeight = this.getStringHeight(truncated, fontAttr);
 		
 		var textElement = this.g.text(x + width/2 - realWidth*0/2 + 0*paddingX, y + realHeight/2 + paddingY, truncated).attr(fontAttr);
+		
+		var set = this.g.setFinish();
+		// TODO: Expanded Sub Process may has specific handlers
+		//this.addHandlers(set, x, y, width, height, "task");
 	},
 	
 	drawCollapsedSubProcess: function(name, x, y, width, height, isTriggeredByEvent) {
-		this.drawCollapsedTask(name, x, y, width, height, false);
+		this.g.setStart();
+		
+		this._drawCollapsedTask(name, x, y, width, height, false);
+		
+		var set = this.g.setFinish();
+		this.addHandlers(set, x, y, width, height, "task");
 	},
 	
 	drawCollapsedCallActivity: function(name, x, y, width, height) {
-		this.drawCollapsedTask(name, x, y, width, height, true);
+		this.g.setStart();
+		
+		this._drawCollapsedTask(name, x, y, width, height, true);
+		
+		var set = this.g.setFinish();
+		this.addHandlers(set, x, y, width, height, "task");
 	},
 
-	drawCollapsedTask: function(name, x, y, width, height, thickBorder) {
+	_drawCollapsedTask: function(name, x, y, width, height, thickBorder) {
 		// The collapsed marker is now visualized separately
 		this._drawTask(name, x, y, width, height, thickBorder);
 	},
@@ -2034,6 +2054,7 @@ ProcessDiagramCanvas.prototype = {
 			measurer.rafaelTextObject.attr({"text-anchor": horizontalAlign}); // end, middle, start
 			
 		var bb = measurer.rafaelTextObject.getBBox();
+		// TODO: there is somethin wrong with wertical align. May be: measurer.rafaelTextObject.attr({"y": y + height/2 - bb.height/2})
 		measurer.rafaelTextObject.attr({"y": y + bb.height/2});
 		//var bb = measurer.rafaelTextObject.getBBox();
 		

@@ -61,7 +61,36 @@ $(document).ready(function(){
 		*/
 		diagramBreadCrumbsId: "diagramBreadCrumbs",
 		diagramHolderId: "diagramHolder",
-		diagramInfoId: "diagramInfo"
+		diagramInfoId: "diagramInfo",
+		on: {
+			click: function(canvas, element, contextObject){
+				var mouseEvent = this;
+				console.log("[CLICK] mouseEvent: %o, canvas: %o, clicked element: %o, contextObject: %o", mouseEvent, canvas, element, contextObject);
+				
+				if (contextObject.getProperty("type") == "callActivity") {
+					var processDefinitonKey = contextObject.getProperty("processDefinitonKey");
+					var processDefinitons = contextObject.getProperty("processDefinitons");
+					var processDefiniton = processDefinitons[0];
+					console.log("Load callActivity '" + processDefiniton.processDefinitionKey + "', contextObject: ", contextObject);
+					
+					// Load processDefinition
+					ProcessDiagramGenerator.drawDiagram(processDefiniton.processDefinitionId);
+				}
+			},
+			over: function(canvas, element, contextObject){
+				var mouseEvent = this;
+				//console.log("[OVER] mouseEvent: %o, canvas: %o, clicked element: %o, contextObject: %o", mouseEvent, canvas, element, contextObject);
+				
+				// TODO: show tooltip-window with contextObject info
+				ProcessDiagramGenerator.showActivityInfo(contextObject);
+			},
+			out: function(canvas, element, contextObject){
+				var mouseEvent = this;
+				//console.log("[OUT] mouseEvent: %o, canvas: %o, clicked element: %o, contextObject: %o", mouseEvent, canvas, element, contextObject);
+				
+				ProcessDiagramGenerator.hideInfo();
+			}
+		}
 	};
 	ActivitiRest.options = {
 		/*
