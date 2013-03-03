@@ -359,25 +359,33 @@
 			var height=55, width=235, x=700, y=150;
 			var name = "expanded sub process not TriggeredByEvent";
 			var isTriggeredByEvent = false;
-			diagramCanvas.drawExpandedSubProcess(name, x, y, width, height, isTriggeredByEvent);
+			var activityImpl = new ActivityImpl({"activityId": "expandedSubProcess1", "properties": {"name": name, "type": "subProcess", "collapsed":true}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			
+			/*diagramCanvas.drawExpandedSubProcess(name, x, y, width, height, isTriggeredByEvent);
 			var multiInstanceSequential=false, multiInstanceParallel=false, collapsed=true;
 			diagramCanvas.drawActivityMarkers(x, y, width, height, multiInstanceSequential,
-				multiInstanceParallel, collapsed);
+				multiInstanceParallel, collapsed);*/
 			//
 			var height=55, width=235, x=700, y=220;
 			var name = "Collapsed Sub Process";
+			var activityImpl = new ActivityImpl({"activityId": "collapsedSubProcess1", "properties": {"name": name, "type": "subProcess", "multiInstance":"sequential", "isExpanded": false}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			/* 
 			//var isTriggeredByEvent = false;
 			diagramCanvas.drawCollapsedSubProcess(name, x, y, width, height, isTriggeredByEvent);
 			var multiInstanceSequential=true, multiInstanceParallel=false, collapsed=false;
 			diagramCanvas.drawActivityMarkers(x, y, width, height, multiInstanceSequential,
-				multiInstanceParallel, collapsed);
+				multiInstanceParallel, collapsed);*/
 			//
 			var height=55, width=235, x=700, y=290;
 			var name = "Collapsed Call Activity";
-			diagramCanvas.drawCollapsedCallActivity(name, x, y, width, height);
+			var activityImpl = new ActivityImpl({"activityId": "collapsedCallActivity1", "properties": {"name": name, "type": "callActivity", "multiInstance":"parrallel"}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			/*diagramCanvas.drawCollapsedCallActivity(name, x, y, width, height);
 			var multiInstanceSequential=false, multiInstanceParallel=true, collapsed=false;
 			diagramCanvas.drawActivityMarkers(x, y, width, height, multiInstanceSequential,
-				multiInstanceParallel, collapsed);
+				multiInstanceParallel, collapsed);*/
 			//
 			var height=40, width=40, x=700, y=360;
 			var label = "Parallel Gateway";
@@ -441,10 +449,16 @@
 			diagramCanvas.drawAssociation(waypoints, withArrowHead, hightLighed);
 			
 			var height=55, width=235, x=700, y=670;
-			diagramCanvas.drawUserTask("User Task", x, y, width, height);
+			var name = "User Task";
+			var activityImpl = new ActivityImpl({"activityId": "userTask1", "properties": {"name": name, "type": "userTask"}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//diagramCanvas.drawUserTask("User Task", x, y, width, height);
 			
 			var height=55, width=235, x=700, y=740;
-			diagramCanvas.drawScriptTask("Script Task", x, y, width, height);
+			var name = "Script Task";
+			var activityImpl = new ActivityImpl({"activityId": "scriptTask1", "properties": {"name": name, "type": "scriptTask"}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
+			//diagramCanvas.drawScriptTask("Script Task", x, y, width, height);
 			
 		});
 	</script>
