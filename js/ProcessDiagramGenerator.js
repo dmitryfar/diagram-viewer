@@ -450,6 +450,17 @@ var ProcessDiagramGenerator = {
 			processDiagramCanvas.setConextObject(activityImpl);
 			processDiagramCanvas.drawCollapsedCallActivity(activityImpl.getProperty("name"), activityImpl.getX(), activityImpl.getY(), activityImpl.getWidth(), activityImpl.getHeight());
 		};
+		
+		$(document).ready(function(){
+			// Protect right click on SVG elements (and on canvas too)
+			document.body.oncontextmenu = function(event) {
+				if (window.event.srcElement.tagName == "shape" || window.event.srcElement.tagName == "DIV" && window.event.srcElement.parentElement.className == "diagram") {
+					// IE DIAGRAM CANVAS OR SHAPE DETECTED!
+					return false;
+				}
+				return (!Object.isSVGElement(window.event.srcElement));
+			};
+		});
 	},
 	
 	getActivitiLabel:function(activityImpl){

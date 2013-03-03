@@ -77,6 +77,10 @@ $(document).ready(function(){
 					ProcessDiagramGenerator.drawDiagram(processDefiniton.processDefinitionId);
 				}
 			},
+			rightClick: function(canvas, element, contextObject){
+				var mouseEvent = this;
+				console.log("[RIGHTCLICK] mouseEvent: %o, canvas: %o, clicked element: %o, contextObject: %o", mouseEvent, canvas, element, contextObject);
+			},
 			over: function(canvas, element, contextObject){
 				var mouseEvent = this;
 				//console.log("[OVER] mouseEvent: %o, canvas: %o, clicked element: %o, contextObject: %o", mouseEvent, canvas, element, contextObject);

@@ -236,11 +236,22 @@ ProcessDiagramCanvas.prototype = {
 		var overlay = element;
 		var set = overlay.data("set");
 		var contextObject = overlay.data("contextObject");
-		console.log("["+contextObject.getProperty("type")+"], activityId: " + contextObject.getId());
+		//console.log("["+contextObject.getProperty("type")+"], activityId: " + contextObject.getId());
 		
 		if (ProcessDiagramGenerator.options && ProcessDiagramGenerator.options.on && ProcessDiagramGenerator.options.on.click) {
 			var args = [instance, element, contextObject];
 			ProcessDiagramGenerator.options.on.click.apply(event, args);
+		}
+	},
+	onRightClick: function(event, instance, element){
+		var overlay = element;
+		var set = overlay.data("set");
+		var contextObject = overlay.data("contextObject");
+		//console.log("[%s], activityId: %s (RIGHTCLICK)", contextObject.getProperty("type"), contextObject.getId());
+		
+		if (ProcessDiagramGenerator.options && ProcessDiagramGenerator.options.on && ProcessDiagramGenerator.options.on.rightClick) {
+			var args = [instance, element, contextObject];
+			ProcessDiagramGenerator.options.on.rightClick.apply(event, args);
 		}
 	},
 	onHoverIn: function(event, instance, element){
@@ -310,6 +321,7 @@ ProcessDiagramCanvas.prototype = {
 		overlay.data("contextObject",contextObject);
 		
 		var instance = this;
+		overlay.mousedown(function(event){if (event.button == 2) instance.onRightClick(event, instance, this);});
 		overlay.click(function(event){instance.onClick(event, instance, this);});
 		overlay.hover(function(event){instance.onHoverIn(event, instance, this);}, function(event){instance.onHoverOut(event, instance, this);});
 	},

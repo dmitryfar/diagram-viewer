@@ -14,3 +14,10 @@ if(!Array.isArray) {
     return Object.prototype.toString.call(vArg) === "[object Array]";
   };
 }
+
+if (!Object.isSVGElement) {
+  Object.isSVGElement = function(vArg) {
+    var str = Object.prototype.toString.call(vArg);
+	return (str.indexOf("[object SVG") == 0);
+  };
+}
