@@ -164,6 +164,26 @@ ProcessDiagramCanvas.prototype = {
 		
 		this.g = Raphael(this.canvasHolder);
 		this.g.clear();
+		
+		// add canvas handlers
+		var instance = this;
+		this.canvas = this.g.rect(0, 0, this.canvasWidth, this.canvasHeight);
+		this.canvas.id = "diagram-canvas";
+		this.canvas.attr({"fill": Color.white, "opacity": 0.0});
+		this.canvas.node.raphaelelementid = this.canvas.id;
+		this.canvas.node.rightClick = function(event){
+			var element = instance.g.getById(this.raphaelelementid);
+			if (ProcessDiagramGenerator.options && ProcessDiagramGenerator.options.on && ProcessDiagramGenerator.options.on.canvasRightClick) {
+				var args = [instance, element];
+				ProcessDiagramGenerator.options.on.canvasRightClick.apply(event, args);
+			}
+		};
+		this.canvas.click(function(){
+			if (ProcessDiagramGenerator.options && ProcessDiagramGenerator.options.on && ProcessDiagramGenerator.options.on.canvasClick) {
+				var args = [instance, element];
+				ProcessDiagramGenerator.options.on.canvasClick.apply(event, args);
+			}
+		});
 	
 		//this.setPaint(Color.DimGrey);
 		this.setPaint(Color.black);
@@ -321,7 +341,14 @@ ProcessDiagramCanvas.prototype = {
 		overlay.data("contextObject",contextObject);
 		
 		var instance = this;
-		overlay.mousedown(function(event){if (event.button == 2) instance.onRightClick(event, instance, this);});
+		
+		// do not use overlay.mouseup
+		// rightClick called from oncontextmenu (see ProcessDiagramGenerator)
+		overlay.node.raphaelelementid = overlay.id;
+		overlay.node.rightClick = function(event){
+			var element = instance.g.getById(this.raphaelelementid);
+			instance.onRightClick(event, instance, element);
+		};
 		overlay.click(function(event){instance.onClick(event, instance, this);});
 		overlay.hover(function(event){instance.onHoverIn(event, instance, this);}, function(event){instance.onHoverOut(event, instance, this);});
 	},

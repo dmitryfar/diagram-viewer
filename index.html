@@ -64,6 +64,7 @@ $(document).ready(function(){
 		diagramInfoId: "diagramInfo",
 		on: {
 			click: function(canvas, element, contextObject){
+				// ON ELEMENT CLICK
 				var mouseEvent = this;
 				console.log("[CLICK] mouseEvent: %o, canvas: %o, clicked element: %o, contextObject: %o", mouseEvent, canvas, element, contextObject);
 				
@@ -78,10 +79,18 @@ $(document).ready(function(){
 				}
 			},
 			rightClick: function(canvas, element, contextObject){
+				// ON ELEMENT RIGHT CLICK
 				var mouseEvent = this;
 				console.log("[RIGHTCLICK] mouseEvent: %o, canvas: %o, clicked element: %o, contextObject: %o", mouseEvent, canvas, element, contextObject);
 			},
+			canvasClick: function(canvas, element){
+				// ON CANVAS RIGHT CLICK
+			},
+			canvasRightClick: function(canvas, element){
+				// ON CANVAS RIGHT CLICK
+			},
 			over: function(canvas, element, contextObject){
+				// ON ELEMENT OVER
 				var mouseEvent = this;
 				//console.log("[OVER] mouseEvent: %o, canvas: %o, clicked element: %o, contextObject: %o", mouseEvent, canvas, element, contextObject);
 				
@@ -89,6 +98,7 @@ $(document).ready(function(){
 				ProcessDiagramGenerator.showActivityInfo(contextObject);
 			},
 			out: function(canvas, element, contextObject){
+				// ON ELEMENT OUT
 				var mouseEvent = this;
 				//console.log("[OUT] mouseEvent: %o, canvas: %o, clicked element: %o, contextObject: %o", mouseEvent, canvas, element, contextObject);
 				

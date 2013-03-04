@@ -17,7 +17,11 @@ if(!Array.isArray) {
 
 if (!Object.isSVGElement) {
   Object.isSVGElement = function(vArg) {
-    var str = Object.prototype.toString.call(vArg);
-	return (str.indexOf("[object SVG") == 0);
+	if ($.browser.msie) {
+		return (window.event.srcElement.tagName == "shape");
+	} else {
+		var str = Object.prototype.toString.call(vArg);
+		return (str.indexOf("[object SVG") == 0);
+	}
   };
 }

@@ -454,11 +454,18 @@ var ProcessDiagramGenerator = {
 		$(document).ready(function(){
 			// Protect right click on SVG elements (and on canvas too)
 			document.body.oncontextmenu = function(event) {
-				if (window.event.srcElement.tagName == "shape" || window.event.srcElement.tagName == "DIV" && window.event.srcElement.parentElement.className == "diagram") {
-					// IE DIAGRAM CANVAS OR SHAPE DETECTED!
+				// Now canvas is RECT with canvasWidth and canvasHeight
+				//var isCanvas = (window.event.srcElement.parentElement.className == "diagram");
+				
+				var isSVGElement = Object.isSVGElement(window.event.srcElement);
+				
+				if (isSVGElement && window.event.srcElement.rightClick)
+					window.event.srcElement.rightClick(event);
+				
+				if (/*isCanvas ||*/ isSVGElement)
 					return false;
-				}
-				return (!Object.isSVGElement(window.event.srcElement));
+				
+				return true;
 			};
 		});
 	},
