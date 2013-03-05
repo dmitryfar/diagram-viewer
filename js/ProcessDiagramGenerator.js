@@ -639,6 +639,22 @@ var ProcessDiagramGenerator = {
 			task1.run();
 	},
 	
+	getActivity: function(processDefinitionId, activityId) {
+		var processDiagram = this.getProcessDiagram(processDefinitionId);
+		var processDefinitionDiagramLayout = processDiagram.processDefinitionDiagramLayout;
+		
+		// TODO: store activityImplMap in processDefinitionDiagramLayout and get activity by activityId
+		var activities = processDefinitionDiagramLayout.activities;
+		for(var i in activities) {
+			var activityJson = activities[i];
+			var activity = new ActivityImpl(activityJson);
+			if (activity.getId() == activityId)
+				return activity;
+		}
+		
+		return null;
+	},
+	
 	getProcessDiagram: function (processDefinitionId) {
 		return this.processDiagrams[processDefinitionId];
 	},

@@ -247,16 +247,11 @@ ProcessDiagramCanvas.prototype = {
 	getConextObject: function(){
 		return this.contextObject;
 	},
-	setContextToElement: function(object){
-		var contextObject = this.getConextObject();
-		object.id = contextObject.id;
-		object.data("contextObject", contextObject);
-	},
 	
 	onClick: function(event, instance, element){
 		var overlay = element;
 		var set = overlay.data("set");
-		var contextObject = overlay.data("contextObject");
+		var contextObject = ProcessDiagramGenerator.getActivity(instance.processDefinitionId, element.id);
 		//console.log("["+contextObject.getProperty("type")+"], activityId: " + contextObject.getId());
 		
 		if (ProcessDiagramGenerator.options && ProcessDiagramGenerator.options.on && ProcessDiagramGenerator.options.on.click) {
@@ -267,7 +262,7 @@ ProcessDiagramCanvas.prototype = {
 	onRightClick: function(event, instance, element){
 		var overlay = element;
 		var set = overlay.data("set");
-		var contextObject = overlay.data("contextObject");
+		var contextObject = ProcessDiagramGenerator.getActivity(instance.processDefinitionId, element.id);
 		//console.log("[%s], activityId: %s (RIGHTCLICK)", contextObject.getProperty("type"), contextObject.getId());
 		
 		if (ProcessDiagramGenerator.options && ProcessDiagramGenerator.options.on && ProcessDiagramGenerator.options.on.rightClick) {
@@ -278,7 +273,7 @@ ProcessDiagramCanvas.prototype = {
 	onHoverIn: function(event, instance, element){
 		var overlay = element;
 		var set = overlay.data("set");
-		var contextObject = overlay.data("contextObject");
+		var contextObject = ProcessDiagramGenerator.getActivity(instance.processDefinitionId, element.id);
 		
 		var border = instance.g.getById(contextObject.id + "_border");
 		border.attr("opacity", 0.3);
@@ -294,7 +289,7 @@ ProcessDiagramCanvas.prototype = {
 	onHoverOut: function(event, instance, element){
 		var overlay = element;
 		var set = overlay.data("set");
-		var contextObject = overlay.data("contextObject");
+		var contextObject = ProcessDiagramGenerator.getActivity(instance.processDefinitionId, element.id);
 		
 		var border = instance.g.getById(contextObject.id + "_border");
 		border.attr("opacity", 0.0);
@@ -339,7 +334,6 @@ ProcessDiagramCanvas.prototype = {
 		overlay.attr({stroke: Color.Orange,"stroke-width": 3, fill: Color.get(0,0,0), opacity: 0.0, cursor: "hand"});
 		overlay.data("set",set);
 		overlay.id = contextObject.id;
-		overlay.data("contextObject",contextObject);
 		
 		var instance = this;
 		
@@ -481,9 +475,6 @@ ProcessDiagramCanvas.prototype = {
 		if (isInterrupting!=null && isInterrupting!=undefined && !isInterrupting) 
 			circle.attr({"stroke-dasharray": NON_INTERRUPTING_EVENT_STROKE});
 
-		this.setContextToElement(circle);
-		
-		
 		this.setPaint(originalPaint);
 	},
 	
@@ -781,21 +772,6 @@ ProcessDiagramCanvas.prototype = {
 		}
 		
 		this.setPaint(originalPaint);
-		
-		var set = this.g.set();
-		set.push(outerCircle, innerCircle, shaddow);
-		this.setContextToElement(outerCircle);
-		
-		// TODO: add shapes to set
-		
-		/*
-		var st = this.g.set();
-		st.push(
-			this.g.ellipse(innerCircleX, innerCircleY, 2, 2),
-			this.g.ellipse(imageX, imageY, 2, 2)
-		);
-		st.attr({fill: "red", "stroke-width":0});
-		*/
 	},
 	
 	/*
@@ -1285,24 +1261,6 @@ ProcessDiagramCanvas.prototype = {
 		shape.attr(attr);
 		//shape.attr({fill: "90-"+this.getPaint()+"-" + Color.get(250, 250, 244)});
 		
-		var contextObject = this.getConextObject();
-		if (contextObject) {
-			shape.id = contextObject.id;
-			shape.data("contextObject", contextObject);
-		}
-		
-		//var activity = this.getConextObject();
-		//console.log("activity: " + activity.getId(), activity);
-		//Object.clone(activity);
-		
-		/*
-		c.mouseover(function(){
-			this.attr({"stroke-width": NORMAL_STROKE + 2});
-		}).mouseout(function(){
-			this.attr({"stroke-width": NORMAL_STROKE});
-		});
-		*/
-		
 		this.setPaint(originalPaint);
 
 		// white shaddow
@@ -1656,8 +1614,6 @@ ProcessDiagramCanvas.prototype = {
 			rect.attr(EXPANDED_SUBPROCESS_ATTRS);
 		}
 		
-		this.setContextToElement(rect);
-		
 		var fontAttr = EXPANDED_SUBPROCESS_FONT;
 		
 		// Include some padding
@@ -1761,8 +1717,6 @@ ProcessDiagramCanvas.prototype = {
 		rhombus.attr("stroke-width", this.strokeWidth);
 		rhombus.attr("stroke", Color.SlateGrey);
 		rhombus.attr({fill: Color.white});
-		
-		this.setContextToElement(rhombus);
 		
 		return rhombus;
 	},
