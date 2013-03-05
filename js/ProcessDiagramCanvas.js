@@ -179,6 +179,7 @@ ProcessDiagramCanvas.prototype = {
 			}
 		};
 		this.canvas.click(function(){
+			var element = this;
 			if (ProcessDiagramGenerator.options && ProcessDiagramGenerator.options.on && ProcessDiagramGenerator.options.on.canvasClick) {
 				var args = [instance, element];
 				ProcessDiagramGenerator.options.on.canvasClick.apply(event, args);
