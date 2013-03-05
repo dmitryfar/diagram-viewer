@@ -455,12 +455,16 @@ var ProcessDiagramGenerator = {
 			// Protect right click on SVG elements (and on canvas too)
 			document.body.oncontextmenu = function(event) {
 				// Now canvas is RECT with canvasWidth and canvasHeight
-				//var isCanvas = (window.event.srcElement.parentElement.className == "diagram");
+				//var isCanvas = (event.srcElement.parentElement.className == "diagram");
 				
-				var isSVGElement = Object.isSVGElement(window.event.srcElement);
+				if (!event) event = window.event;
+				var element = event.target;
+				if (!element) element = event.srcElement;
 				
-				if (isSVGElement && window.event.srcElement.rightClick)
-					window.event.srcElement.rightClick(event);
+				var isSVGElement = Object.isSVGElement(element);
+				
+				if (isSVGElement && element.rightClick)
+					element.rightClick(event);
 				
 				if (/*isCanvas ||*/ isSVGElement)
 					return false;

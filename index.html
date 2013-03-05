@@ -30,6 +30,7 @@
 		<div id="diagramBreadCrumbs" class="diagramBreadCrumbs" onmousedown="return false" onselectstart="return false"></div>
 		<div id="diagramHolder" class="diagramHolder"></div>
 		<div class="diagram-info" id="diagramInfo"></div>
+		<div class="debug-info" id="debugInfo"></div>
 	</div>
 </div>
 <script language='javascript'>
@@ -77,17 +78,23 @@ $(document).ready(function(){
 					// Load processDefinition
 					ProcessDiagramGenerator.drawDiagram(processDefiniton.processDefinitionId);
 				}
+				
+				var debugInfo = $("#debugInfo"); if (debugInfo) debugInfo.html("ON ELEMENT CLICK");
 			},
 			rightClick: function(canvas, element, contextObject){
 				// ON ELEMENT RIGHT CLICK
 				var mouseEvent = this;
 				console.log("[RIGHTCLICK] mouseEvent: %o, canvas: %o, clicked element: %o, contextObject: %o", mouseEvent, canvas, element, contextObject);
+				
+				var debugInfo = $("#debugInfo"); if (debugInfo) debugInfo.html("ON ELEMENT RIGHT CLICK");
 			},
 			canvasClick: function(canvas, element){
-				// ON CANVAS RIGHT CLICK
+				// ON CANVAS CLICK
+				var debugInfo = $("#debugInfo"); if (debugInfo) debugInfo.html("ON CANVAS CLICK");
 			},
 			canvasRightClick: function(canvas, element){
 				// ON CANVAS RIGHT CLICK
+				var debugInfo = $("#debugInfo"); if (debugInfo) debugInfo.html("ON CANVAS RIGHT CLICK");
 			},
 			over: function(canvas, element, contextObject){
 				// ON ELEMENT OVER
@@ -96,6 +103,8 @@ $(document).ready(function(){
 				
 				// TODO: show tooltip-window with contextObject info
 				ProcessDiagramGenerator.showActivityInfo(contextObject);
+				
+				var debugInfo = $("#debugInfo"); if (debugInfo) debugInfo.html("ON ELEMENT OVER");
 			},
 			out: function(canvas, element, contextObject){
 				// ON ELEMENT OUT
@@ -103,6 +112,8 @@ $(document).ready(function(){
 				//console.log("[OUT] mouseEvent: %o, canvas: %o, clicked element: %o, contextObject: %o", mouseEvent, canvas, element, contextObject);
 				
 				ProcessDiagramGenerator.hideInfo();
+				
+				var debugInfo = $("#debugInfo"); if (debugInfo) debugInfo.html("ON ELEMENT OUT");
 			}
 		}
 	};
