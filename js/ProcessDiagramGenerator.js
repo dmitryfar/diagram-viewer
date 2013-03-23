@@ -439,8 +439,6 @@ var ProcessDiagramGenerator = {
 			  processDiagramCanvas.drawExpandedSubProcess(activityImpl.getProperty("name"), activityImpl.getX(), activityImpl.getY(),
 					  activityImpl.getWidth(), activityImpl.getHeight(), isTriggeredByEvent);
 			}
-			
-			//console.error("subProcess is not implemented yet");
 		};
 		
 		// call activity
@@ -504,7 +502,6 @@ var ProcessDiagramGenerator = {
 	generateDiagram: function(processDefinitionDiagramLayout){
 		// Init canvas
 		var processDefinitionId = processDefinitionDiagramLayout.processDefinition.id;
-		//console.log("Init canvas ", processDefinitionId);
 		
 		if (this.getProcessDiagram(processDefinitionId) != undefined) {
 			// TODO: may be reset canvas if exists.. Or just show
@@ -633,7 +630,7 @@ var ProcessDiagramGenerator = {
 				if (processInstanceId)
 					ProcessDiagramGenerator.drawHighLights(processInstanceId);
 					
-				console.timeEnd('generateDiagram');
+				//console.timeEnd('generateDiagram');
 			});
 			
 			task1.run();
@@ -824,28 +821,6 @@ var ProcessDiagramGenerator = {
 	
 	drawHighLights: function(processInstanceId) {
 		// Load highLights for the processInstanceId
-		/*
-		var url = Lang.sub(this.options.processInstanceHighLightsUrl, {processInstanceId: processInstanceId});
-		$.ajax({
-			url: url,
-			type: 'GET',
-			dataType: 'json',
-			cache: false,
-			async: true,
-		}).done(function(data) {
-			var highLights = data;
-			if (!highLights) {
-				console.log("highLights not found");
-				return;
-			}
-			
-			console.log("highLights[" + highLights.processDefinitionId + "][" + processInstanceId + "]: ", highLights);
-			
-			ProcessDiagramGenerator.setHighLights(highLights);
-		}).fail(function(jqXHR, textStatus){
-			console.log('Get HighLights['+processDefinitionId+'] failure: ', textStatus, jqXHR);
-		});
-		*/
 		ActivitiRest.getHighLights(processInstanceId, this._drawHighLights);
 	},
 	_drawHighLights: function() {
@@ -894,7 +869,7 @@ var ProcessDiagramGenerator = {
 			return;
 		}
 
-		console.time('loadDiagram');
+		//console.time('loadDiagram');
 		
 		// Load processDefinition
 		
@@ -905,8 +880,8 @@ var ProcessDiagramGenerator = {
 		
 		console.log("process-definition-diagram-layout["+processDefinitionDiagramLayout.processDefinition.id+"]: ", processDefinitionDiagramLayout);
 		
-		console.timeEnd('loadDiagram');
-		console.time('generateDiagram');
+		//console.timeEnd('loadDiagram');
+		//console.time('generateDiagram');
 		
 		pb1.set('value', 0);
 		ProcessDiagramGenerator.generateDiagram(processDefinitionDiagramLayout);
@@ -951,27 +926,24 @@ var ProcessDiagramGenerator = {
 		
 		
 		var ul = this.diagramBreadCrumbs.find("ul");
-		//console.log("ul: ", ul);
+		
 		if (ul.size() == 0) {
 			ul = $(TPL_UL_CONTAINER);
 			this.diagramBreadCrumbs.append(ul);
 			
 		}
 		var liListOld = ul.find("li");
-		//console.warn("liListOld", liListOld);
 		
 		// TODO: if there is any items after current then remove that before adding new item (m.b. it is a duplicate)
 		var currentBreadCrumbsItemId = this.currentBreadCrumbsItemId;
 			found = false;
 		liListOld.each(
 			function(index, item) {
-				//console.warn("item:", $(this));
 				if (!found && currentBreadCrumbsItemId == $(this).attr("id")) {
 					found = true;
 					return;
 				}
 				if (found) {
-					//console.warn("remove ", $(this).attr("id"));
 					$(this).remove();
 				}
 			}
@@ -979,7 +951,6 @@ var ProcessDiagramGenerator = {
 		
 		var liListNew = ul.find("li");
 		
-		//console.log("liListNew size: ", liListNew.size());
 		var values = {
 			id: 'breadCrumbsItem_' + liListNew.size(),
 			processDefinitionId: processDefinitionId,
@@ -988,11 +959,9 @@ var ProcessDiagramGenerator = {
 		
 		
 		var tpl = Lang.sub(TPL_LI_CONTAINER, values);
-		//console.log("tpl: ", tpl);
 		ul.append(tpl);
 		
 		var li = ul.find("#" + values.id);
-		//console.warn("li:", li);
 		$('#' + values.id).on('click', this._breadCrumbsItemClick);
 		
 		ul.find("li").removeClass("selected");
@@ -1004,7 +973,7 @@ var ProcessDiagramGenerator = {
 		var li = $(this),
 			id = li.attr("id"),
 			processDefinitionId = li.attr("processDefinitionId");
-		console.warn("_breadCrumbsItemClick: ", id, ", processDefinitionId: ", processDefinitionId);
+		//console.warn("_breadCrumbsItemClick: ", id, ", processDefinitionId: ", processDefinitionId);
 		
 		var ul = ProcessDiagramGenerator.diagramBreadCrumbs.one("ul");
 		ul.find("li").removeClass("selected");
@@ -1045,7 +1014,6 @@ var ProcessDiagramGenerator = {
 				+ '<div><b>isConditional</b>: {isConditional}</div>'
 				+ '<div><b>isHighLighted</b>: {isHighLighted}</div>';
 		var tpl = Lang.sub(TPL_FLOW_INFO, values);
-		//console.log("info: ", tpl);
 		diagramInfo.html(tpl);
 	},
 	
@@ -1076,7 +1044,6 @@ var ProcessDiagramGenerator = {
 		}
 				
 		var tpl = Lang.sub(template, values);
-		//console.log("info: ", tpl);
 		diagramInfo.html(tpl);
 	},
 	

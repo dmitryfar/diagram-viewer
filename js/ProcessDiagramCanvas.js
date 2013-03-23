@@ -53,7 +53,8 @@ var LABEL_COLOR = Color.get(72, 106, 150);
 // Fonts
 var NORMAL_FONT = {font: "10px Arial", opacity: 1, fill: Color.black};
 var LABEL_FONT = {font: "11px Arial", "font-style":"italic", opacity: 1, "fill": LABEL_COLOR};
-var LABEL_FONT_SMOOTH = {font: "10px Arial", "font-style":"italic", opacity: 1, "fill": LABEL_COLOR, stroke: LABEL_COLOR, "stroke-width":.4};
+// NOTE: italic does not work in IE8, don't know why...
+var LABEL_FONT_SMOOTH = {font: "10px Arial", /*"font-style":"italic",*/ opacity: 1, "fill": LABEL_COLOR, stroke: LABEL_COLOR, "stroke-width":.4};
 var TASK_FONT = {font: "11px Arial", opacity: 1, fill: Color.black};
 var TASK_FONT_SMOOTH = {font: "11px Arial", opacity: 1, fill: Color.black, stroke: LABEL_COLOR, "stroke-width":.4};
 var POOL_LANE_FONT = {font: "11px Arial", opacity: 1, fill: Color.black};
@@ -1002,17 +1003,18 @@ ProcessDiagramCanvas.prototype = {
 		}
 		
 		var st = this.g.set();
-		st.push(polyline.element, arrowHead, circleTail, conditionalSequenceFlowIndicator);
+		st.push(polyline.element, arrowHead, circleTail, conditionalSequenceFlowIndicator, defaultSequenceFlowIndicator);
 		polyline.element.data("set", st);
 		polyline.element.data("withArrowHead", withArrowHead);
 		
-		var polyCloneAttrNormal = {"stroke-width": this.getStroke() + 5, stroke: Color.get(132,112,255), opacity: 0.0, cursor: "hand"};
+		// NOTE: for path in IE opacity have to be more than 0 to have handler "on mouse over"
+		var polyCloneAttrNormal = {"stroke-width": this.getStroke() + 5, stroke: Color.get(132,112,255), opacity: 0.01, cursor: "hand"};
 		var polyClone = st.clone().attr(polyCloneAttrNormal).hover(function () {
 				//if (polyLine.data("isSelected")) return;
 				polyClone.attr({opacity: 0.2});
 			}, function () {
 				//if (polyLine.data("isSelected")) return;
-				polyClone.attr({opacity: 0.0});
+				polyClone.attr({opacity: 0.01});
 			});
 		polyClone.data("objectId", polyline.element.id);
 		polyClone.click(function(){
@@ -1065,8 +1067,11 @@ ProcessDiagramCanvas.prototype = {
 		var x1 = line.x1 + dx + 0*c*cosAngle;
 		var y1 = line.y1 + dy + 0*c*sinAngle;
 		
+		// hook for IE
+		var d = ($.browser.msie)? -1.5 : 0;
+		
 		defaultIndicator.transform("t" + (x1) + "," + (y1) + "");
-		defaultIndicator.transform("...r" + Raphael.deg(line.angle - 3*Math.PI / 4) + " " + 0 + " " + 0);
+		defaultIndicator.transform("...r" + Raphael.deg(line.angle - 3*Math.PI / 4) + " " + d + " " + d);
 		/*
 		var c0 = this.g.ellipse(0, 0, 1, 1).attr({stroke: Color.Blue});
 		c0.transform("t" + (line.x1) + "," + (line.y1) + "");
@@ -1122,8 +1127,11 @@ ProcessDiagramCanvas.prototype = {
 		if (this.strokeWidth%2 == 1)
 			line.x2 += .5, line.y2 += .5;
 		
+		// hook for IE
+		var d = ($.browser.msie)? -1.5 : 0;
+		
 		arrowHead.transform("t" + line.x2 + "," + line.y2 + "");
-		arrowHead.transform("...r" + Raphael.deg(line.angle - Math.PI / 2) + " " + 0 + " " + 0);
+		arrowHead.transform("...r" + Raphael.deg(line.angle - Math.PI / 2) + " " + d + " " + d);
 		
 		if (!connectionType || connectionType == CONNECTION_TYPE.SEQUENCE_FLOW)
 			arrowHead.attr("fill", this.getPaint());
@@ -1190,8 +1198,11 @@ ProcessDiagramCanvas.prototype = {
 		polygone.element = this.g.path(polygone.path);
 		polygone.element.attr("fill", Color.white);
 		
+		// hook for IE
+		var d = ($.browser.msie)? -1.5 : 0;
+		
 		polygone.transform("t" + line.x1 + "," + line.y1 + "");
-		polygone.transform("...r" + Raphael.deg(line.angle - Math.PI / 2) + " " + 0 + " " + 0);
+		polygone.transform("...r" + Raphael.deg(line.angle - Math.PI / 2) + " " + d + " " + d);
 		
 		
 		var cosAngle = Math.cos((line.angle));
@@ -1601,6 +1612,7 @@ ProcessDiagramCanvas.prototype = {
 		this.g.setStart();
 		
 		// anti smoothing
+		var realX = x, realY = y;
 		if (this.strokeWidth%2 == 1)
 			x = Math.round(x) + .5, y = Math.round(y) + .5;
 		
@@ -1627,9 +1639,11 @@ ProcessDiagramCanvas.prototype = {
 		
 		var textElement = this.g.text(x + width/2 - realWidth*0/2 + 0*paddingX, y + realHeight/2 + paddingY, truncated).attr(fontAttr);
 		
+		x = realX, y = realY;
+		
 		var set = this.g.setFinish();
 		// TODO: Expanded Sub Process may has specific handlers
-		//this.addHandlers(set, x, y, width, height, "task");
+		this.addHandlers(set, x, y, width, height, "subProcess");
 	},
 	
 	drawCollapsedSubProcess: function(name, x, y, width, height, isTriggeredByEvent) {
