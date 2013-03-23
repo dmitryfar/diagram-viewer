@@ -26,7 +26,8 @@
             if (f) {
 				inQueue++;
 				setTimeout(function(){
-					f.fn.apply(that, [that]);
+					if (f.fn)
+						f.fn.apply(that, [that]);
 				
 					if (!f.isParallel)
 						if (paused === false) {

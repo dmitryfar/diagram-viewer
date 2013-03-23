@@ -31,7 +31,13 @@
 	$(document).ready(function(){
 			//ProcessDiagramCanvas.init(1000, 1000);
 			var diagramCanvas = new ProcessDiagramCanvas();
-			diagramCanvas.init(1000, 800);
+			var processDefinitionId = "holder";
+			diagramCanvas.init(1200, 800, processDefinitionId);
+			ProcessDiagramGenerator.processDiagrams = {};
+			ProcessDiagramGenerator.processDiagrams[processDefinitionId] = {
+					processDefinitionDiagramLayout: {}
+			};
+			
 			
 			/*
 			// HOWTO: rotate arrow
@@ -441,13 +447,13 @@
 			//
 			var waypoints = [ {x: "700",	y: "600"}, {x: "800",	y: "585"}, {x: "870",	y: "615"}, {x: "940",	y: "600"} ];
 			var conditional=false, isDefault = false, hightLighed=false;
-			var withArrowHead = false;
-			diagramCanvas.drawAssociation(waypoints, withArrowHead, hightLighed);
+			var flowDirection = "None";
+			diagramCanvas.drawAssociation(waypoints, flowDirection, hightLighed);
 			//
 			var waypoints = [ {x: "700",	y: "630"}, {x: "800",	y: "615"}, {x: "870",	y: "645"}, {x: "940",	y: "630"} ];
 			var conditional=false, isDefault = false, hightLighed=false;
-			var withArrowHead = true;
-			diagramCanvas.drawAssociation(waypoints, withArrowHead, hightLighed);
+			var flowDirection = "Both";
+			diagramCanvas.drawAssociation(waypoints, flowDirection, hightLighed);
 			
 			var height=55, width=235, x=700, y=670;
 			var name = "User Task";
@@ -460,6 +466,14 @@
 			var activityImpl = new ActivityImpl({"activityId": "scriptTask1", "properties": {"name": name, "type": "scriptTask"}, "x": x, "y": y, "width": width, "height": height});
 			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
 			//diagramCanvas.drawScriptTask("Script Task", x, y, width, height);
+			
+			//****
+			//
+			//drawAnnotationText
+			var height=55, width=205, x=970, y=10;
+			var text = "Was Alexandra on the highway and sucking bread ring.";
+			var activityImpl = new ActivityImpl({"activityId": "textAnnotation1", "properties": {"text": text, "type": "textAnnotation"}, "x": x, "y": y, "width": width, "height": height});
+			ProcessDiagramGenerator.drawActivity(diagramCanvas, activityImpl);
 			
 		});
 	</script>

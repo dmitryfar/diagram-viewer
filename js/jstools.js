@@ -25,3 +25,47 @@ if (!Object.isSVGElement) {
 	}
   };
 }
+
+/*
+ * function Parent() {}
+ * function Child(arg) {}
+ * Child.extends(Parent);
+ * Child.prototype.init = function(){};
+ */
+Function.prototype._extends = function(Parent){
+	Child = this;
+	var F = function () { };
+	F.prototype = Parent.prototype;
+	Child.prototype = new F();
+	Child.prototype.constructor = Parent;
+	//Child.prototype.superclass = Parent.prototype;
+	Child.prototype.className = Child.name;
+	
+	if (Child._name)
+		Child.name = Child._name();
+};
+
+/**
+ * Hack in support for Function.name for browsers that don't support it.
+ * IE, I'm looking at you.
+**/
+if (Function.prototype.name === undefined) {
+	if (Object.defineProperty !== undefined) {
+		Object.defineProperty(Function.prototype, 'name', {
+			get: function() {
+				//var funcNameRegex = /function\s+([^(]{1,})\(/;
+				var funcNameRegex = /function\s+([^\s\(]+)/;
+				var results = (funcNameRegex).exec((this).toString());
+				return (results && results.length > 1) ? results[1].trim() : "";
+			},
+			set: function(value) {}
+		});
+	} else {
+		Function.prototype._name = function(){
+				var funcNameRegex = /function\s([^(]{1,})\(/;
+				var results = (funcNameRegex).exec((this).toString());
+				
+				return (results && results.length > 1) ? results[1] : "";
+		}
+	}
+}

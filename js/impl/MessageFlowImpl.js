@@ -1,0 +1,1 @@
+/** *  * @author (Javascript) Dmitry Farafonov */function MessageFlowImpl(flowJson) {	this.constructor(flowJson);	//this.setType(this.className.replace("Impl", ""));	this.setType("MessageFlow");}MessageFlowImpl._extends(FlowImpl); MessageFlowImpl.prototype.init = function(){};

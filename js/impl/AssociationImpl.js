@@ -1,0 +1,1 @@
+/** *  * @author (Javascript) Dmitry Farafonov */function AssociationImpl(flowJson) {	this.constructor(flowJson);	//this.setType(this.className.replace("Impl", ""));	this.setType("Association");}AssociationImpl._extends(FlowImpl); AssociationImpl.prototype.init = function(){	this.associationDirection = this.getProperty("associationDirection");};

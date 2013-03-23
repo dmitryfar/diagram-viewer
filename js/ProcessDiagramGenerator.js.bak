@@ -625,6 +625,12 @@ var ProcessDiagramGenerator = {
 		var processDiagramCanvas = processDiagram.diagramCanvas;
 		var processDefinitionDiagramLayout = processDiagram.processDefinitionDiagramLayout;
 		
+		/*
+		alert(Object.defineProperty);
+		var funcNameRegex = /function\s([^(]{1,})\(/;
+        var results = (funcNameRegex).exec((impl).toString())[1];
+		*/
+		alert(impl.name);
 		var listName = impl.name.toLowerCase().replace(/impl$/,"").replace(/flow$/,"Flow");
 		var flows = processDefinitionDiagramLayout[listName + "s"];
 		if (!flows) flows = [];

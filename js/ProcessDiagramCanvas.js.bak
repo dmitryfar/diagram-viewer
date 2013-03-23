@@ -335,10 +335,12 @@ ProcessDiagramCanvas.prototype = {
 			var overlay = this.g.rect(x, y, width, height);
 		}
 		
-		border.attr({stroke: Color.get(132,112,255)/*Color.Tan1*/,"stroke-width": 4, opacity: 0.0});
-		border.id = contextObject.id + "_border";
+		if (border) {
+			border.attr({stroke: Color.get(132,112,255)/*Color.Tan1*/,"stroke-width": 4, opacity: 0.0});
+			border.id = contextObject.id + "_border";
 		
-		set.push(border);
+			set.push(border);
+		}
 		
 		overlay.attr({stroke: Color.Orange,"stroke-width": 3, fill: Color.get(0,0,0), opacity: 0.0, cursor: "pointer"});
 		overlay.data("set",set);

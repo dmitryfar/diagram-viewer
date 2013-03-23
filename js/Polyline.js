@@ -108,8 +108,17 @@ Polyline.prototype = {
 		line.angle = this.getLineAngle(i) ;
 		return line;
 	},
+	getTailLine: function(){
+		var line = this._getLine(0);
+		var tailLine = {x1: line.x2, y1: line.y2, x2: line.x1, y2: line.y1};
+		tailLine.angle = this.getAngle(tailLine);
+		return tailLine;
+	},
 	getLineAngle: function(i){
 		var line = this._getLine(i);
+		return Math.atan2(line.y2 - line.y1, line.x2 - line.x1);
+	},
+	getAngle: function(line){
 		return Math.atan2(line.y2 - line.y1, line.x2 - line.x1);
 	},
 	getLineLengthX: function(i){
